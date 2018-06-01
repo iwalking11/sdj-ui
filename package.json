@@ -4,6 +4,10 @@
   "version": "1.0.0", 
   "author": "sdj",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/walking11/sdj-ui/tree/master"
+  },
   "dependencies": {
     "@minui/wxc-example": "^1.0.0",
     "@minui/wxc-example-demo": "^1.0.0",
