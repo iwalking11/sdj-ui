@@ -1,18 +1,96 @@
 <template>
-  <wxc-popup></wxc-popup>
+  <button bindtap="showPop">显示底部分享弹窗</button>
+  <wxc-popup class="wxc-popup">
+    <view class="content">
+      <view class="share-title">分享{{item.title}}</view>
+      <view class="share-line">
+        <view class="share-content" open-type="share" hover-class="none">
+          <view class="icon icon-wx-friend share-icon"></view>
+          <view>微信好友</view>
+        </view>
+        <view class="share-content" open-type="getUserInfo" bindgetuserinfo="clickShareCircle">
+          <view class="icon icon-wx-circle share-icon"></view>
+          <view>朋友圈</view>
+        </view>
+      </view>
+      <view class="share-cancel" bindtap="hidePop">取消</view>
+    </view>
+  </wxc-popup>
 </template>
 
 <script>
 export default {
   config: {
     usingComponents: {
-      'wxc-popup': '@sdjui/wxc-popup'
+      'wxc-popup': 'wxc-popup'
     }
   },
   data: { },
-  methods: { }
+  methods: {
+    showPop(){
+      let popup = this.selectComponent('.wxc-popup')
+      popup && popup.showPop()
+    },
+    hidePop(){
+      let popup = this.selectComponent('.wxc-popup')
+      popup && popup.hidePop()
+    }
+  }
 }
 </script>
 
-<style>
+<style lang="less" rel="stylesheet/less">
+  @import "font.less";
+  .content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .share-title{
+      line-height: 80rpx;
+      font-size: 32rpx;
+      color: #323232;
+    }
+    .share-line{
+      color: #646464;
+      width: 100%;
+      align-self: flex-start;
+      border-top: 1rpx solid #e6e6e6;
+      border-bottom: 20rpx solid #e6e6e6;
+      display:-webkit-box;
+      display:-webkit-flex;
+      align-items: center;
+      -webkit-align-items:center;
+      height: 190rpx;
+      font-size: 24rpx;
+      text-align: center;
+      button {
+        margin: 0;
+        border-radius:0;
+        border: none;
+        background-color:inherit;
+        color:inherit;
+        font-size:inherit;
+      }
+      .share-content{
+        padding: 0 50rpx;
+        line-height: 36rpx;
+        overflow: visible;//调整因为button样式造成的样式问题
+        .share-icon{
+          margin-bottom: 12rpx;
+          color: #52c61e;
+          font-size: 88rpx;
+        }
+        .icon-wx-circle{
+          color: #25cfa9;
+        }
+      }
+    }
+    .share-cancel{
+      width: 100%;
+      text-align: center;
+      padding: 18rpx 0 24rpx 0;
+      font-size: 36rpx;
+      color: #646464;
+    }
+  }
 </style>

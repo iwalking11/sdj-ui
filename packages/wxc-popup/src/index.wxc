@@ -1,6 +1,9 @@
 <template>
-  <view class="wxc-popup">
-    <view>WxcPopup Component</view>
+  <view class="share-page" style="background-color: rgba(0, 0, 0, {{opacity}})" wx:if="{{show}}" capture-catch:touchmove="preventdefault" catchtouchmove="preventdefault" >
+    <view class="share-box" animation="{{animationData}}" >
+      <slot></slot>
+    </view>
+
   </view>
 </template>
 
@@ -10,15 +13,96 @@ export default {
     usingComponents: { }
   },
   behaviors: [ ],
-  properties: { },
-  data: { },
-  methods: { }
+  properties: {
+    item: {
+      type: Object,
+      default: {},
+    },
+  },
+  data: {
+    show: false,
+    opacity: 0,
+    animationData: "",
+    animation: null,
+    base: 1 //1rpx对应的屏幕实际px大小
+  },
+  methods: {
+    hidePop() {
+      // 隐藏遮罩层
+      let animation = this.data.animation;
+      let base = this.data.base; //1rpx对应的屏幕实际px大小
+      //调用动画操作方法后要调用 step() 来表示一组动画完成
+      animation.translateY(370 * base).step(); //     在Y轴向上偏移370rpx(需要转换成px)
+      this.setData({
+        animationData:animation.export(),
+        opacity:0,
+      });
+      setTimeout(() => {
+        this.setData({
+          show:false,
+        });
+      }, 200)
+    },
+    showPop(){
+      const {screenWidth} = wx.getSystemInfoSync();
+      //获取屏幕宽度
+      let base = screenWidth/750; //1rpx对应的屏幕实际px大小
+      // 显示遮罩层
+      //创建一个动画实例animation。调用实例的方法来描述动画。
+      let animation = wx.createAnimation({
+        duration: 200,         //动画持续时间200ms
+        timingFunction: "ease",//动画以低速开始，然后加快，在结束前变慢
+        delay: 0               //动画延迟时间0ms
+      });
+      this.setData({
+        animation: animation,
+        base: base,
+      });
+      //调用动画操作方法后要调用 step() 来表示一组动画完成
+      animation.translateY(370 * base).step(); //     在Y轴向上偏移370rpx(需要转换成px)
+      this.setData({
+        animationData: animation.export(),
+        show: true,
+        opacity: 0,
+      });
+      setTimeout(() => {
+        animation.translateY(0).step();
+        this.setData({
+          animationData: animation.export(),
+          opacity: 0.6,
+        });
+      }, 200)
+    }
+  },
+
+
+
 }
 
 
 </script>
 
-<style>
-.wxc-popup {
-}
+<style lang="less" rel="stylesheet/less">
+  .share-page{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 1000;
+    color: #fff;
+    /*背景透明度渐变动画以低速开始，然后加快，在结束前变慢*/
+    transition: all 0.2s ease 0s;
+    .share-box{
+      width: 100%;
+      overflow: hidden;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 2000;
+      background: #ffffff;
+      opacity: 1;
+    }
+  }
 </style>
