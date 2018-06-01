@@ -3,7 +3,6 @@
     <view class="share-box" animation="{{animationData}}" >
       <slot></slot>
     </view>
-
   </view>
 </template>
 
@@ -29,27 +28,27 @@ export default {
   methods: {
     hidePop() {
       // 隐藏遮罩层
-      let animation = this.data.animation;
-      let base = this.data.base; //1rpx对应的屏幕实际px大小
+      var animation = this.data.animation;
+      var base = this.data.base; //1rpx对应的屏幕实际px大小
       //调用动画操作方法后要调用 step() 来表示一组动画完成
       animation.translateY(370 * base).step(); //     在Y轴向上偏移370rpx(需要转换成px)
       this.setData({
         animationData:animation.export(),
         opacity:0,
       });
-      setTimeout(() => {
+      setTimeout(function(){
         this.setData({
           show:false,
         });
       }, 200)
     },
     showPop(){
-      const {screenWidth} = wx.getSystemInfoSync();
+      var screenWidth = wx.getSystemInfoSync().screenWidth;
       //获取屏幕宽度
-      let base = screenWidth/750; //1rpx对应的屏幕实际px大小
+      var base = screenWidth/750; //1rpx对应的屏幕实际px大小
       // 显示遮罩层
       //创建一个动画实例animation。调用实例的方法来描述动画。
-      let animation = wx.createAnimation({
+      var animation = wx.createAnimation({
         duration: 200,         //动画持续时间200ms
         timingFunction: "ease",//动画以低速开始，然后加快，在结束前变慢
         delay: 0               //动画延迟时间0ms
@@ -65,7 +64,7 @@ export default {
         show: true,
         opacity: 0,
       });
-      setTimeout(() => {
+      setTimeout(function(){
         animation.translateY(0).step();
         this.setData({
           animationData: animation.export(),
