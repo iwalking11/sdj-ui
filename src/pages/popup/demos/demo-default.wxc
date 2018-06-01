@@ -1,0 +1,18 @@
+<template>
+  <wxc-popup></wxc-popup>
+</template>
+
+<script>
+export default {
+  config: {
+    usingComponents: {
+      'wxc-popup': '@sdjui/wxc-popup'
+    }
+  },
+  data: { },
+  methods: { }
+}
+</script>
+
+<style>
+</style>
